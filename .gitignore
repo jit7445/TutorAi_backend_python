@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+.env.local
+
+# Secrets and keys
+service_account.json
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
