@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     GDRIVE_ROOT_FOLDER_ID: str = "your_folder_id"
     gpt_api_key: str = ""
     Gemini_api_key: str = ""
+    NODE_CALLBACK_URL: str = "http://localhost:3005/api/v1/ai/callback"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
