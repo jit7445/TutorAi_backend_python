@@ -10,6 +10,14 @@ class Settings(BaseSettings):
     gpt_api_key: str = ""
     Gemini_api_key: str = ""
     NODE_CALLBACK_URL: str = "http://localhost:3005/api/v1/ai/callback"
+    CLOUDINARY_CLOUD_NAME: str = ""
+    CLOUDINARY_API_KEY: str = ""
+    CLOUDINARY_API_SECRET: str = ""
+    CLOUDINARY_URL: str = ""
+    QUICK_SCRAPER_ACCESS_TOKEN: str = ""
+    CHROMA_API_KEY: str = ""
+    CHROMA_TENANT: str = ""
+    CHROMA_DATABASE: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

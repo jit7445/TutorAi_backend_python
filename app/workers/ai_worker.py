@@ -35,7 +35,8 @@ def process_job_sync(job_id: str, topic: str = None, pdf_path: str = None):
             status="completed",
             video_url=upload_urls.get("video_url"),
             pdf_url=upload_urls.get("pdf_url"),
-            doc_url=upload_urls.get("doc_url")
+            doc_url=upload_urls.get("doc_url"),
+            pdf_thumbnail=upload_urls.get("pdf_thumbnail")
         ))
         
         shutil.rmtree(temp_dir, ignore_errors=True)

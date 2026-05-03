@@ -1,6 +1,7 @@
 import os
 from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from docx import Document
 
 def generate_notes(notes_data: dict, output_dir: str) -> dict:
@@ -11,31 +12,30 @@ def generate_notes(notes_data: dict, output_dir: str) -> dict:
     pdf_path = os.path.join(output_dir, "notes.pdf")
     doc_path = os.path.join(output_dir, "notes.docx")
     
-    # PDF using reportlab
-    c = canvas.Canvas(pdf_path, pagesize=letter)
-    width, height = letter
-    c.setFont("Helvetica-Bold", 16)
-    c.drawString(50, height - 50, f"Topic: {topic}")
+    # --- PDF using reportlab (Improved) ---
+    doc_pdf = SimpleDocTemplate(pdf_path, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
     
-    c.setFont("Helvetica", 12)
-    y = height - 80
+    # Add Title
+    story.append(Paragraph(f"Topic: {topic}", styles['Title']))
+    story.append(Spacer(1, 12))
+    
+    # Add Notes
     for note in notes:
-        # Simple rendering for now
-        if y < 50:
-            c.showPage()
-            y = height - 50
-        c.drawString(50, y, f"• {note[:90]}...")
-        y -= 20
-    c.save()
-    
-    # DOCX using python-docx
-    doc = Document()
-    doc.add_heading(f"Topic: {topic}", 0)
-    
-    for note in notes:
-        doc.add_paragraph(note, style='List Bullet')
+        story.append(Paragraph(f"• {note}", styles['Normal']))
+        story.append(Spacer(1, 6))
         
-    doc.save(doc_path)
+    doc_pdf.build(story)
+    
+    # --- DOCX using python-docx ---
+    doc_docx = Document()
+    doc_docx.add_heading(f"Topic: {topic}", 0)
+    
+    for note in notes:
+        doc_docx.add_paragraph(note, style='List Bullet')
+        
+    doc_docx.save(doc_path)
     
     return {
         "pdf_path": pdf_path,

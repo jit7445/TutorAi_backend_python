@@ -26,3 +26,8 @@ python-multipart
 sentence-transformers
 langchain-openai
 langchain-google-genai
+cloudinary
+langchain-ollama
+wikipedia
+duckduckgo-search
+quickscraper-sdk
