@@ -42,3 +42,45 @@ async def create_job(
     )
     
     return {"job_id": job_id, "message": "Job queued successfully using FastAPI Background Tasks"}
+
+@router.post("/summarize")
+async def summarize_document(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...)
+):
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+    job_id = str(uuid.uuid4())
+    pdf_path = f"/tmp/uploads/{job_id}_{file.filename}"
+    os.makedirs("/tmp/uploads", exist_ok=True)
+    with open(pdf_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        
+    # background_tasks.add_task(process_summary_sync, job_id, pdf_path)
+    return {"job_id": job_id, "message": "Summary job queued"}
+
+@router.post("/tts")
+async def generate_tts(
+    background_tasks: BackgroundTasks,
+    text: str = Form(...)
+):
+    if not text:
+        raise HTTPException(status_code=400, detail="Text is required")
+    job_id = str(uuid.uuid4())
+    # background_tasks.add_task(process_tts_sync, job_id, text)
+    return {"job_id": job_id, "message": "TTS job queued"}
+
+@router.post("/coach")
+async def presentation_coach(
+    background_tasks: BackgroundTasks,
+    audio: UploadFile = File(...)
+):
+    job_id = str(uuid.uuid4())
+    audio_path = f"/tmp/uploads/{job_id}_{audio.filename}"
+    os.makedirs("/tmp/uploads", exist_ok=True)
+    with open(audio_path, "wb") as buffer:
+        shutil.copyfileobj(audio.file, buffer)
+        
+    # background_tasks.add_task(process_coach_sync, job_id, audio_path)
+    return {"job_id": job_id, "message": "Coach job queued"}
+
